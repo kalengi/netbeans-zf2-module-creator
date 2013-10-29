@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE filesystem PUBLIC "-//NetBeans//DTD Filesystem 1.2//EN"
+                            "http://www.netbeans.org/dtds/filesystem-1_2.dtd">
+<filesystem>
+    <folder name="Actions">
+        <folder name="Tools">
+            <file name="co-ke-nerdonia-ndzf2modules-ZF2ModuleActionListener.instance">
+                <!--co.ke.nerdonia.ndzf2modules.ZF2ModuleActionListener-->
+                <attr
+                    bundlevalue="co.ke.nerdonia.ndzf2modules.Bundle#CTL_ZF2ModuleActionListener" name="displayName"/>
+                <attr methodvalue="org.openide.awt.Actions.context" name="instanceCreate"/>
+                <attr name="type" stringvalue="org.netbeans.api.project.Project"/>
+                <attr methodvalue="org.openide.awt.Actions.inject" name="delegate"/>
+                <attr name="injectable" stringvalue="co.ke.nerdonia.ndzf2modules.ZF2ModuleActionListener"/>
+                <attr name="selectionType" stringvalue="EXACTLY_ONE"/>
+                <attr name="iconBase" stringvalue="co/ke/nerdonia/ndzf2modules/ZF2_icon.png"/>
+                <attr boolvalue="false" name="noIconInMenu"/>
+            </file>
+        </folder>
+    </folder>
+    <folder name="Menu">
+        <folder name="Tools">
+            <file name="co-ke-nerdonia-ndzf2modules-ZF2ModuleActionListener.shadow">
+                <!--co.ke.nerdonia.ndzf2modules.ZF2ModuleActionListener-->
+                <attr name="originalFile" stringvalue="Actions/Tools/co-ke-nerdonia-ndzf2modules-ZF2ModuleActionListener.instance"/>
+                <attr intvalue="375" name="position"/>
+            </file>
+            <file name="co-ke-nerdonia-ndzf2modules-ZF2ModuleActionListener-separatorAfter.instance">
+                <!--co.ke.nerdonia.ndzf2modules.ZF2ModuleActionListener-->
+                <attr name="instanceCreate" newvalue="javax.swing.JSeparator"/>
+                <attr intvalue="387" name="position"/>
+            </file>
+        </folder>
+    </folder>
+    <folder name="Loaders">
+        <folder name="folder">
+            <folder name="any">
+                <folder name="Actions">
+                    <file name="co-ke-nerdonia-ndzf2modules-ZF2ModuleActionListener.shadow">
+                        <!--co.ke.nerdonia.ndzf2modules.ZF2ModuleActionListener-->
+                        <attr name="originalFile" stringvalue="Actions/Tools/co-ke-nerdonia-ndzf2modules-ZF2ModuleActionListener.instance"/>
+                        <attr intvalue="225" name="position"/>
+                    </file>
+                    <file name="co-ke-nerdonia-ndzf2modules-ZF2ModuleActionListener-separatorAfter.instance">
+                        <!--co.ke.nerdonia.ndzf2modules.ZF2ModuleActionListener-->
+                        <attr name="instanceCreate" newvalue="javax.swing.JSeparator"/>
+                        <attr intvalue="237" name="position"/>
+                    </file>
+                </folder>
+            </folder>
+        </folder>
+    </folder>
+</filesystem>

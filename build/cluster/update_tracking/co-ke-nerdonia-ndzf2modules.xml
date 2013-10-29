@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?><module codename="co.ke.nerdonia.ndzf2modules">
+    <module_version install_time="1383082176409" last="true" origin="installer" specification_version="1.0">
+        <file crc="2888292136" name="config/Modules/co-ke-nerdonia-ndzf2modules.xml"/>
+        <file crc="1346275419" name="modules/co-ke-nerdonia-ndzf2modules.jar"/>
+    </module_version>
+</module>

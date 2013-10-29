@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+OpenIDE-Module: co.ke.nerdonia.ndzf2modules
+OpenIDE-Module-Localizing-Bundle: co/ke/nerdonia/ndzf2modules/Bundle.properties
+OpenIDE-Module-Specification-Version: 1.0
+
