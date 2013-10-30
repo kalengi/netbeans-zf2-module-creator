@@ -16,15 +16,31 @@ import org.openide.NotifyDescriptor;
 import org.openide.WizardDescriptor;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
+import org.openide.awt.ActionReferences;
 import org.openide.awt.ActionRegistration;
+import org.openide.filesystems.FileObject;
 
 // An example action demonstrating how the wizard could be called from within
 // your code. You can move the code below wherever you need, or register an action:
- @ActionID(category="ZF2 Module", id="co.ke.nerdonia.ndzf2modules.ZF2ModuleCreatorWizardAction")
- @ActionRegistration(displayName="New ZF2 Module...")
- @ActionReference(path="Menu/Tools", position=8)
+ //@ActionID(category="ZF2 Module", id="co.ke.nerdonia.ndzf2modules.ZF2ModuleCreatorWizardAction")
+ //@ActionRegistration(displayName="New ZF2 Module...")
+ //@ActionReference(path="Menu/Tools", position=8)
+
+@ActionID(category = "ZF2 Module", id = "co.ke.nerdonia.ndzf2modules.ZF2ModuleCreatorWizardAction")
+@ActionRegistration(iconBase = "co/ke/nerdonia/ndzf2modules/ZF2_icon.png", displayName = "New ZF2 Module...")
+@ActionReferences({
+    @ActionReference(path = "Menu/Tools", position = 375, separatorAfter = 387),
+    @ActionReference(path = "Loaders/folder/any/Actions", position = 225, separatorAfter = 237)
+})
+
 public final class ZF2ModuleCreatorWizardAction implements ActionListener {
 
+    private final FileObject context;
+
+    public ZF2ModuleCreatorWizardAction(FileObject context) {
+        this.context = context;
+    }
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<WizardDescriptor.Panel<WizardDescriptor>>();

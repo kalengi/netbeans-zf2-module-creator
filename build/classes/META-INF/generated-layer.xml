@@ -7,9 +7,12 @@
             <file name="co-ke-nerdonia-ndzf2modules-ZF2ModuleCreatorWizardAction.instance">
                 <!--co.ke.nerdonia.ndzf2modules.ZF2ModuleCreatorWizardAction-->
                 <attr name="displayName" stringvalue="New ZF2 Module..."/>
-                <attr
-                    methodvalue="org.openide.awt.Actions.alwaysEnabled" name="instanceCreate"/>
-                <attr name="delegate" newvalue="co.ke.nerdonia.ndzf2modules.ZF2ModuleCreatorWizardAction"/>
+                <attr methodvalue="org.openide.awt.Actions.context" name="instanceCreate"/>
+                <attr name="type" stringvalue="org.openide.filesystems.FileObject"/>
+                <attr methodvalue="org.openide.awt.Actions.inject" name="delegate"/>
+                <attr name="injectable" stringvalue="co.ke.nerdonia.ndzf2modules.ZF2ModuleCreatorWizardAction"/>
+                <attr name="selectionType" stringvalue="EXACTLY_ONE"/>
+                <attr name="iconBase" stringvalue="co/ke/nerdonia/ndzf2modules/ZF2_icon.png"/>
                 <attr boolvalue="false" name="noIconInMenu"/>
             </file>
         </folder>
@@ -19,8 +22,31 @@
             <file name="co-ke-nerdonia-ndzf2modules-ZF2ModuleCreatorWizardAction.shadow">
                 <!--co.ke.nerdonia.ndzf2modules.ZF2ModuleCreatorWizardAction-->
                 <attr name="originalFile" stringvalue="Actions/ZF2 Module/co-ke-nerdonia-ndzf2modules-ZF2ModuleCreatorWizardAction.instance"/>
-                <attr intvalue="8" name="position"/>
+                <attr intvalue="375" name="position"/>
             </file>
+            <file name="co-ke-nerdonia-ndzf2modules-ZF2ModuleCreatorWizardAction-separatorAfter.instance">
+                <!--co.ke.nerdonia.ndzf2modules.ZF2ModuleCreatorWizardAction-->
+                <attr name="instanceCreate" newvalue="javax.swing.JSeparator"/>
+                <attr intvalue="387" name="position"/>
+            </file>
+        </folder>
+    </folder>
+    <folder name="Loaders">
+        <folder name="folder">
+            <folder name="any">
+                <folder name="Actions">
+                    <file name="co-ke-nerdonia-ndzf2modules-ZF2ModuleCreatorWizardAction.shadow">
+                        <!--co.ke.nerdonia.ndzf2modules.ZF2ModuleCreatorWizardAction-->
+                        <attr name="originalFile" stringvalue="Actions/ZF2 Module/co-ke-nerdonia-ndzf2modules-ZF2ModuleCreatorWizardAction.instance"/>
+                        <attr intvalue="225" name="position"/>
+                    </file>
+                    <file name="co-ke-nerdonia-ndzf2modules-ZF2ModuleCreatorWizardAction-separatorAfter.instance">
+                        <!--co.ke.nerdonia.ndzf2modules.ZF2ModuleCreatorWizardAction-->
+                        <attr name="instanceCreate" newvalue="javax.swing.JSeparator"/>
+                        <attr intvalue="237" name="position"/>
+                    </file>
+                </folder>
+            </folder>
         </folder>
     </folder>
 </filesystem>
