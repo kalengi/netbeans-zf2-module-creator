@@ -16,7 +16,6 @@ import java.io.Serializable;
  */
 public class ZF2Module implements Serializable{
     
-    private static final char[] ILLEGAL_CHARACTERS = { '/', '\n', '\r', '\t', '\0', '\f', '`', '?', '*', '\\', '<', '>', '|', '\"', ':', ' ' };
     private String moduleName; 
     private String modulePath;
     private static final String configFolderName = "config";
@@ -25,7 +24,10 @@ public class ZF2Module implements Serializable{
     private static final String controllerFolderName = "Controller";
     private static final String formFolderName = "Form";
     private static final String modelFolderName = "Model";
-   
+    private ZF2ModuleDirectory moduleDirectoryStructure;
+
+    
+
 
     
 
@@ -53,61 +55,31 @@ public class ZF2Module implements Serializable{
             throw new IllegalStateException("The module path is not specified"); 
         }
         
-        //main module directory
-        File moduleDirectory = new File(modulePath, moduleName);
-        moduleDirectory.mkdir();
+        //main, config
+        moduleDirectoryStructure = new ZF2ModuleDirectory(modulePath, moduleName);
+        moduleDirectoryStructure.addChild(configFolderName);
         
-        //config directory
-        String moduleFolderPath = moduleDirectory.getPath();
-        File configDirectory = new File(moduleFolderPath, configFolderName);
-        configDirectory.mkdir();
+        //src
+        ZF2ModuleDirectory srcDirectory = moduleDirectoryStructure.addChild(srcFolderName);
+        ZF2ModuleDirectory srcModuleDirectory = srcDirectory.addChild(moduleName);
+        srcModuleDirectory.addChild(controllerFolderName);
+        srcModuleDirectory.addChild(formFolderName);
+        srcModuleDirectory.addChild(modelFolderName);
         
-        //src directory
-        File srcDirectory = new File(moduleFolderPath, srcFolderName);
-        srcDirectory.mkdir();
-        
-        File subDirectory = new File(srcDirectory.getPath(), moduleName);
-        subDirectory.mkdir();
-        
-        String subDirectoryPath = subDirectory.getPath();
-        subDirectory = new File(subDirectoryPath, controllerFolderName);
-        subDirectory.mkdir();
-        
-        subDirectory = new File(subDirectoryPath, formFolderName);
-        subDirectory.mkdir();
-        
-        subDirectory = new File(subDirectoryPath, modelFolderName);
-        subDirectory.mkdir();
-        
-        
-        //view directory
-        File viewDirectory = new File(moduleFolderPath, viewFolderName);
-        viewDirectory.mkdir();
-        
-        subDirectory = new File(viewDirectory.getPath(), moduleName.toLowerCase());
-        subDirectory.mkdir();
-        
-        subDirectoryPath = subDirectory.getPath();
-        subDirectory = new File(subDirectoryPath, moduleName.toLowerCase());
-        subDirectory.mkdir();
+        //view
+        ZF2ModuleDirectory viewDirectory = moduleDirectoryStructure.addChild(viewFolderName);
+        ZF2ModuleDirectory viewModuleDirectory = viewDirectory.addChild(moduleName.toLowerCase());
+        viewModuleDirectory.addChild(moduleName.toLowerCase());
         
     }
 
     /**
-     * Check the validity of moduleName
+     * Get the value of moduleDirectoryStructure
      *
-     * @param moduleName moduleName to be checked
-     * 
-     * @return true if valid, false if invalid
+     * @return the value of moduleDirectoryStructure
      */
-    private boolean isFileNameValid(String moduleName) {
-        for(int i = 0; i < ILLEGAL_CHARACTERS.length; i++){
-            if(moduleName.contains(Character.toString(ILLEGAL_CHARACTERS[i]))){
-                return false;
-            }
-        }
-        
-        return true;
+    public ZF2ModuleDirectory getModuleDirectoryStructure() {
+        return moduleDirectoryStructure;
     }
     
     /**
@@ -124,11 +96,8 @@ public class ZF2Module implements Serializable{
      *
      * @param moduleName new value of moduleName
      */
-    public final void setModuleName(String moduleName) throws IllegalArgumentException {
-        if(!isFileNameValid(moduleName)){
-            throw new IllegalArgumentException("Invalid module name"); 
-        }
-        
+    public final void setModuleName(String moduleName)  {
+                
         this.moduleName = moduleName;
     }
     
@@ -146,13 +115,7 @@ public class ZF2Module implements Serializable{
      *
      * @param modulePath new value of modulePath
      */
-    public void setModulePath(String modulePath) throws IllegalArgumentException {
-        File moduleFolder = new File(modulePath);
-        
-        if(!moduleFolder.isDirectory()){
-            throw new IllegalArgumentException("The supplied path is not valid");
-        }
-        
+    public void setModulePath(String modulePath) {
         this.modulePath = modulePath;
     }
     
