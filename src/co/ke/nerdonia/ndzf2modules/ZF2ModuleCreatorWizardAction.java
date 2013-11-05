@@ -7,6 +7,7 @@ package co.ke.nerdonia.ndzf2modules;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +40,10 @@ public final class ZF2ModuleCreatorWizardAction implements ActionListener {
 
     public ZF2ModuleCreatorWizardAction(FileObject context) {
         this.context = context;
+        /*if(!context.isFolder()){
+            DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message("Only works for folders..."));
+            System.exit(0);
+        }*/
     }
     
     @Override
@@ -64,7 +69,27 @@ public final class ZF2ModuleCreatorWizardAction implements ActionListener {
         wiz.setTitleFormat(new MessageFormat("{0}"));
         wiz.setTitle("ZF2 Module name");
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
-            DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message("Module created..."));
+            String moduleName = ((ZF2ModuleCreatorWizardPanel1)panels.get(0)).getModuleNameFromVisualPanel();
+            
+            try{
+                createZF2Module(moduleName);
+                
+                DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message("Module " + moduleName + " created in folder " + context.getNameExt()));
+            }
+            catch(Exception ex){
+                String message = "Module creation failed with the error: " + ex.getMessage();
+                DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message(message));
+            }
+            
         }
     }
+
+    private void createZF2Module(String moduleName) throws IOException {
+        ZF2Module zf2Module = new ZF2Module(moduleName);
+        
+        zf2Module.setModulePath(context.getPath());
+        zf2Module.create();
+    }
+    
+    
 }

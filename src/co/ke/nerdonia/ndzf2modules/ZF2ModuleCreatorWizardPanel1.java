@@ -65,7 +65,7 @@ public class ZF2ModuleCreatorWizardPanel1 implements WizardDescriptor.Panel<Wiza
         wiz.putProperty("module name", getModuleNameFromVisualPanel());
     }
     
-    private String getModuleNameFromVisualPanel() {
+    public String getModuleNameFromVisualPanel() {
         return ((ZF2ModuleCreatorVisualPanel1) component).getModuleName();
    }
 }
