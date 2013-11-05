@@ -19,6 +19,13 @@ public class ZF2Module implements Serializable{
     private static final char[] ILLEGAL_CHARACTERS = { '/', '\n', '\r', '\t', '\0', '\f', '`', '?', '*', '\\', '<', '>', '|', '\"', ':', ' ' };
     private String moduleName; 
     private String modulePath;
+    private static final String configFolderName = "config";
+    private static final String srcFolderName = "src";
+    private static final String viewFolderName = "view";
+    private static final String controllerFolderName = "Controller";
+    private static final String formFolderName = "Form";
+    private static final String modelFolderName = "Model";
+   
 
     
 
@@ -46,13 +53,43 @@ public class ZF2Module implements Serializable{
             throw new IllegalStateException("The module path is not specified"); 
         }
         
-        //String moduleDirectoryPath = 
+        //main module directory
         File moduleDirectory = new File(modulePath, moduleName);
-       
         moduleDirectory.mkdir();
         
+        //config directory
+        String moduleFolderPath = moduleDirectory.getPath();
+        File configDirectory = new File(moduleFolderPath, configFolderName);
+        configDirectory.mkdir();
         
-        int stopHere = 44;
+        //src directory
+        File srcDirectory = new File(moduleFolderPath, srcFolderName);
+        srcDirectory.mkdir();
+        
+        File subDirectory = new File(srcDirectory.getPath(), moduleName);
+        subDirectory.mkdir();
+        
+        String subDirectoryPath = subDirectory.getPath();
+        subDirectory = new File(subDirectoryPath, controllerFolderName);
+        subDirectory.mkdir();
+        
+        subDirectory = new File(subDirectoryPath, formFolderName);
+        subDirectory.mkdir();
+        
+        subDirectory = new File(subDirectoryPath, modelFolderName);
+        subDirectory.mkdir();
+        
+        
+        //view directory
+        File viewDirectory = new File(moduleFolderPath, viewFolderName);
+        viewDirectory.mkdir();
+        
+        subDirectory = new File(viewDirectory.getPath(), moduleName.toLowerCase());
+        subDirectory.mkdir();
+        
+        subDirectoryPath = subDirectory.getPath();
+        subDirectory = new File(subDirectoryPath, moduleName.toLowerCase());
+        subDirectory.mkdir();
         
     }
 
@@ -117,5 +154,59 @@ public class ZF2Module implements Serializable{
         }
         
         this.modulePath = modulePath;
+    }
+    
+    /**
+     * Get the value of modelFolderName
+     *
+     * @return the value of modelFolderName
+     */
+    public static String getModelFolderName() {
+        return modelFolderName;
+    }
+
+    /**
+     * Get the value of formFolderName
+     *
+     * @return the value of formFolderName
+     */
+    public static String getFormFolderName() {
+        return formFolderName;
+    }
+
+    /**
+     * Get the value of controllerFolderName
+     *
+     * @return the value of controllerFolderName
+     */
+    public static String getControllerFolderName() {
+        return controllerFolderName;
+    }
+
+    /**
+     * Get the value of viewFolderName
+     *
+     * @return the value of viewFolderName
+     */
+    public static String getViewFolderName() {
+        return viewFolderName;
+    }
+
+    /**
+     * Get the value of srcFolderName
+     *
+     * @return the value of srcFolderName
+     */
+    public static String getSrcFolderName() {
+        return srcFolderName;
+    }
+
+    /**
+     * Get the value of configFolderName
+     *
+     * @return the value of configFolderName
+     */
+    public static String getConfigFolderName() {
+        return configFolderName;
     }
 }
