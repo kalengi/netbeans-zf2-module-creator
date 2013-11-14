@@ -4,15 +4,13 @@
  */
 package co.ke.nerdonia.ndzf2modules;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-//import org.openide.filesystems.FileObject;
-//import org.openide.util.Exceptions;
+import org.stringtemplate.v4.*;
 
 /**
  *
- * @author alex githatu
+ * @author Alex Githatu
  */
 public class ZF2Module implements Serializable{
     
@@ -55,9 +53,10 @@ public class ZF2Module implements Serializable{
             throw new IllegalStateException("The module path is not specified"); 
         }
         
+        // Directory structure...
         //main, config
         moduleDirectoryStructure = new ZF2ModuleDirectory(modulePath, moduleName);
-        moduleDirectoryStructure.addChild(configFolderName);
+        ZF2ModuleDirectory configDirectory = moduleDirectoryStructure.addChild(configFolderName);
         
         //src
         ZF2ModuleDirectory srcDirectory = moduleDirectoryStructure.addChild(srcFolderName);
@@ -70,6 +69,16 @@ public class ZF2Module implements Serializable{
         ZF2ModuleDirectory viewDirectory = moduleDirectoryStructure.addChild(viewFolderName);
         ZF2ModuleDirectory viewModuleDirectory = viewDirectory.addChild(moduleName.toLowerCase());
         viewModuleDirectory.addChild(moduleName.toLowerCase());
+        
+        // Config files...
+        ClassLoader cl = ClassLoader.getSystemClassLoader();
+        String templateFolder = cl.getResource("resources/CodeTemplates/Module.st").getPath();// getClass().getResource("/resources/CodeTemplates").getPath();
+        //templateFolder = File.g
+        STGroup templates = new STGroupDir(templateFolder);
+        ST moduleTemplate = templates.getInstanceOf("Module");
+        moduleTemplate.add("ModuleName", moduleName);
+        String moduleCode = moduleTemplate.render();
+        int letsSee = 200;
         
     }
 

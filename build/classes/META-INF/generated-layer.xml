@@ -49,4 +49,19 @@
             </folder>
         </folder>
     </folder>
+    <folder name="OptionsDialog">
+        <folder name="org-netbeans-modules-php-project-ui-options-PHPOptionsCategory">
+            <file name="co-ke-nerdonia-ndzf2modules-NdZF2ModuleOptionsPanelController.instance">
+                <!--co.ke.nerdonia.ndzf2modules.NdZF2ModuleOptionsPanelController-->
+                <attr
+                    methodvalue="org.netbeans.spi.options.AdvancedOption.createSubCategory" name="instanceCreate"/>
+                <attr name="controller" newvalue="co.ke.nerdonia.ndzf2modules.NdZF2ModuleOptionsPanelController"/>
+                <attr
+                    bundlevalue="co.ke.nerdonia.ndzf2modules.Bundle#AdvancedOption_DisplayName_NdZF2Module" name="displayName"/>
+                <attr
+                    bundlevalue="co.ke.nerdonia.ndzf2modules.Bundle#AdvancedOption_Keywords_NdZF2Module" name="keywords"/>
+                <attr name="keywordsCategory" stringvalue="org-netbeans-modules-php-project-ui-options-PHPOptionsCategory/NdZF2Module"/>
+            </file>
+        </folder>
+    </folder>
 </filesystem>

@@ -10,7 +10,7 @@ import java.util.Map;
 
 /**
  *
- * @author alex
+ * @author Alex Githatu
  */
 public class ZF2ModuleDirectory {
     
