@@ -4,6 +4,12 @@
  */
 package co.ke.nerdonia.ndzf2modules;
 
+import java.io.File;
+import javax.swing.JFileChooser;
+import org.openide.DialogDisplayer;
+import org.openide.NotifyDescriptor;
+import org.openide.util.NbPreferences;
+
 final class NdZF2ModulePanel extends javax.swing.JPanel {
 
     private final NdZF2ModuleOptionsPanelController controller;
@@ -22,42 +28,111 @@ final class NdZF2ModulePanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        NdZF2OptionsPanel = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        TemplateDirectoryTextField = new javax.swing.JTextField();
+        DirectoryBrowseButton = new javax.swing.JButton();
+
+        NdZF2OptionsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(NdZF2ModulePanel.class, "NdZF2ModulePanel.NdZF2OptionsPanel.border.title"))); // NOI18N
+        NdZF2OptionsPanel.setName(""); // NOI18N
+
+        org.openide.awt.Mnemonics.setLocalizedText(jLabel1, org.openide.util.NbBundle.getMessage(NdZF2ModulePanel.class, "NdZF2ModulePanel.jLabel1.text")); // NOI18N
+
+        TemplateDirectoryTextField.setText(org.openide.util.NbBundle.getMessage(NdZF2ModulePanel.class, "NdZF2ModulePanel.TemplateDirectoryTextField.text")); // NOI18N
+
+        org.openide.awt.Mnemonics.setLocalizedText(DirectoryBrowseButton, org.openide.util.NbBundle.getMessage(NdZF2ModulePanel.class, "NdZF2ModulePanel.DirectoryBrowseButton.text")); // NOI18N
+        DirectoryBrowseButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DirectoryBrowseButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout NdZF2OptionsPanelLayout = new javax.swing.GroupLayout(NdZF2OptionsPanel);
+        NdZF2OptionsPanel.setLayout(NdZF2OptionsPanelLayout);
+        NdZF2OptionsPanelLayout.setHorizontalGroup(
+            NdZF2OptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, NdZF2OptionsPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(TemplateDirectoryTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(DirectoryBrowseButton)
+                .addContainerGap())
+        );
+        NdZF2OptionsPanelLayout.setVerticalGroup(
+            NdZF2OptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(NdZF2OptionsPanelLayout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addGroup(NdZF2OptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(NdZF2OptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(TemplateDirectoryTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(DirectoryBrowseButton))
+                    .addComponent(jLabel1))
+                .addContainerGap(69, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 202, Short.MAX_VALUE)
+            .addComponent(NdZF2OptionsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 68, Short.MAX_VALUE)
+            .addComponent(NdZF2OptionsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void DirectoryBrowseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DirectoryBrowseButtonActionPerformed
+        String initialDirectory = NbPreferences.forModule(NdZF2ModulePanel.class).get("TemplateDirectoryPreference", "");
+        
+        if(initialDirectory.isEmpty()){
+            initialDirectory = System.getProperty("user.dir");
+        }
+        
+        JFileChooser directoryPicker = new JFileChooser(initialDirectory);
+        directoryPicker.setFileSelectionMode( JFileChooser.DIRECTORIES_ONLY);
+        int userResponse = directoryPicker.showOpenDialog(this);
+        
+        if (userResponse == JFileChooser.APPROVE_OPTION) {
+            String selectedDirectory = directoryPicker.getSelectedFile().getPath();
+            
+            TemplateDirectoryTextField.setText(selectedDirectory);
+        }
+    }//GEN-LAST:event_DirectoryBrowseButtonActionPerformed
+
     void load() {
-        // TODO read settings and initialize GUI
-        // Example:        
-        // someCheckBox.setSelected(Preferences.userNodeForPackage(NdZF2ModulePanel.class).getBoolean("someFlag", false));
-        // or for org.openide.util with API spec. version >= 7.4:
-        // someCheckBox.setSelected(NbPreferences.forModule(NdZF2ModulePanel.class).getBoolean("someFlag", false));
-        // or:
-        // someTextField.setText(SomeSystemOption.getDefault().getSomeStringProperty());
+        
+        TemplateDirectoryTextField.setText(NbPreferences.forModule(NdZF2ModulePanel.class).get("TemplateDirectoryPreference", ""));
     }
 
     void store() {
-        // TODO store modified settings
-        // Example:
-        // Preferences.userNodeForPackage(NdZF2ModulePanel.class).putBoolean("someFlag", someCheckBox.isSelected());
-        // or for org.openide.util with API spec. version >= 7.4:
-        // NbPreferences.forModule(NdZF2ModulePanel.class).putBoolean("someFlag", someCheckBox.isSelected());
-        // or:
-        // SomeSystemOption.getDefault().setSomeStringProperty(someTextField.getText());
+        if(valid()){
+            NbPreferences.forModule(NdZF2ModulePanel.class).put("TemplateDirectoryPreference", TemplateDirectoryTextField.getText());
+        }
+        
     }
 
     boolean valid() {
-        // TODO check whether form is consistent and complete
+        String templateDirectoryPath = TemplateDirectoryTextField.getText();
+        if(!templateDirectoryPath.isEmpty()){
+            File templateDirectoryChecker = new File(templateDirectoryPath);
+        
+            if(!templateDirectoryChecker.isDirectory()){
+                String message = "The Template Directory path is not valid";
+                DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message(message));
+                return false;
+            }
+        }
         return true;
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton DirectoryBrowseButton;
+    private javax.swing.JPanel NdZF2OptionsPanel;
+    private javax.swing.JTextField TemplateDirectoryTextField;
+    private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
+
+    
 }
