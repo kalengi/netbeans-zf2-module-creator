@@ -11,7 +11,9 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.prefs.Preferences;
 import javax.swing.JComponent;
+import javax.xml.parsers.ParserConfigurationException;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
 import org.openide.WizardDescriptor;
@@ -20,6 +22,8 @@ import org.openide.awt.ActionReference;
 import org.openide.awt.ActionReferences;
 import org.openide.awt.ActionRegistration;
 import org.openide.filesystems.FileObject;
+import org.openide.util.NbPreferences;
+import org.xml.sax.SAXException;
 
 // An example action demonstrating how the wizard could be called from within
 // your code. You can move the code below wherever you need, or register an action:
@@ -84,10 +88,20 @@ public final class ZF2ModuleCreatorWizardAction implements ActionListener {
         }
     }
 
-    private void createZF2Module(String moduleName) throws IOException {
+    private void createZF2Module(String moduleName) throws IOException, IllegalStateException, ParserConfigurationException, SAXException {
         ZF2Module zf2Module = new ZF2Module(moduleName);
         
         zf2Module.setModulePath(context.getPath());
+        
+        // module definition...
+        Preferences userPreferences = NbPreferences.forModule(NdZF2ModulePanel.class);
+        String moduleDefinitionPath = userPreferences.get("ModuleDefinitionPreference", "");
+        
+        if(moduleDefinitionPath.isEmpty()){
+            throw new IllegalStateException("Please specify the Module Definition file in the options");
+        }
+        
+        zf2Module.setModuleDefinitionPath(moduleDefinitionPath);
         zf2Module.create();
     }
     

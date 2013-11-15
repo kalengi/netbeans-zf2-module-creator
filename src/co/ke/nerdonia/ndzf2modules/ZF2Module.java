@@ -5,15 +5,22 @@
 package co.ke.nerdonia.ndzf2modules;
 
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.prefs.Preferences;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import org.apache.commons.io.FilenameUtils;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
 import org.openide.util.NbPreferences;
 import org.stringtemplate.v4.*;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -30,7 +37,8 @@ public class ZF2Module implements Serializable{
     private static final String formFolderName = "Form";
     private static final String modelFolderName = "Model";
     private ZF2ModuleDirectory moduleDirectoryStructure;
-
+    private String moduleDefinitionPath;
+    private Document moduleDefinition;
     
 
 
@@ -50,7 +58,7 @@ public class ZF2Module implements Serializable{
      *
      * 
      */
-    public void create() throws IOException, IllegalStateException {
+    public void create() throws IOException, IllegalStateException, ParserConfigurationException, SAXException {
         
         if(moduleName.isEmpty()){
             throw new IllegalStateException("The module name is not specified"); 
@@ -59,6 +67,13 @@ public class ZF2Module implements Serializable{
         if(modulePath.isEmpty()){
             throw new IllegalStateException("The module path is not specified"); 
         }
+        
+        if(moduleDefinitionPath.isEmpty()){
+            throw new IllegalStateException("The Module Definition path is not specified"); 
+        }
+        
+        loadModuleDefinition();
+        
         
         // Directory structure...
         //main, config
@@ -88,7 +103,7 @@ public class ZF2Module implements Serializable{
         }
         
         STGroup templates = new STRawGroupDir(templateDirectory, '$', '$');
-        STGroup.verbose = true;
+        //STGroup.verbose = true;
         
         String templateName = "Module";
         ST moduleTemplate = templates.getInstanceOf(templateName);
@@ -105,6 +120,56 @@ public class ZF2Module implements Serializable{
         try (BufferedWriter moduleWriter = new BufferedWriter(new FileWriter(moduleFile))) {
             moduleWriter.write(moduleCode);
         }
+    }
+
+    
+    private void loadModuleDefinition() throws ParserConfigurationException, SAXException, IOException {
+        File moduleDefinitionFile = new File(moduleDefinitionPath);
+        String moduleDefinitionFolder = moduleDefinitionFile.getParent();
+        
+        STGroup templates = new STRawGroupDir(moduleDefinitionFolder, '$', '$');
+        String moduleDefinitionTemplateName = FilenameUtils.getBaseName(moduleDefinitionFile.getPath());
+        
+        ST moduleDefinitionTemplate = templates.getInstanceOf(moduleDefinitionTemplateName);
+        moduleDefinitionTemplate.add("ModuleName", moduleName);
+        moduleDefinitionTemplate.add("ModuleNameLower", moduleName.toLowerCase());
+        String moduleDefinitionXML = moduleDefinitionTemplate.render();
+        
+        DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = builderFactory.newDocumentBuilder();
+        moduleDefinition = builder.parse(new ByteArrayInputStream(moduleDefinitionXML.getBytes()));
+        
+        
+    }
+    
+    /**
+     * Set the value of moduleDefinitionPath
+     *
+     * @param moduleDefinitionPath new value of moduleDefinitionPath
+     */
+    public void setModuleDefinitionPath(String moduleDefinitionPath) {
+        
+        if(moduleDefinitionPath.isEmpty()){
+            throw new IllegalArgumentException("The Module Definition path cannot be blank");
+        }
+        
+        File moduleDefinitionChecker = new File(moduleDefinitionPath);
+
+        if(!moduleDefinitionChecker.isFile() || moduleDefinitionChecker.isDirectory()){
+            throw new IllegalArgumentException("The Module Definition file is not valid");
+        }
+        
+        
+        this.moduleDefinitionPath = moduleDefinitionPath;
+    }
+
+    /**
+     * Get the value of moduleDefinitionPath
+     *
+     * @return the value of moduleDefinitionPath
+     */
+    public String getModuleDefinitionPath() {
+        return moduleDefinitionPath;
     }
 
     /**
@@ -206,4 +271,5 @@ public class ZF2Module implements Serializable{
     public static String getConfigFolderName() {
         return configFolderName;
     }
+
 }
