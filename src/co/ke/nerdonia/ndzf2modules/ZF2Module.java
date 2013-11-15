@@ -4,8 +4,15 @@
  */
 package co.ke.nerdonia.ndzf2modules;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.prefs.Preferences;
+import org.openide.DialogDisplayer;
+import org.openide.NotifyDescriptor;
+import org.openide.util.NbPreferences;
 import org.stringtemplate.v4.*;
 
 /**
@@ -71,15 +78,33 @@ public class ZF2Module implements Serializable{
         viewModuleDirectory.addChild(moduleName.toLowerCase());
         
         // Config files...
-        ClassLoader cl = ClassLoader.getSystemClassLoader();
-        String templateFolder = cl.getResource("resources/CodeTemplates/Module.st").getPath();// getClass().getResource("/resources/CodeTemplates").getPath();
-        //templateFolder = File.g
-        STGroup templates = new STGroupDir(templateFolder);
-        ST moduleTemplate = templates.getInstanceOf("Module");
+        Preferences userPreferences = NbPreferences.forModule(NdZF2ModulePanel.class);
+        String templateDirectory = userPreferences.get("TemplateDirectoryPreference", "");
+        
+        if(templateDirectory.isEmpty()){
+            String message = "Please specify the Template Directory in the options ";
+            DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message(message));
+            return;
+        }
+        
+        STGroup templates = new STRawGroupDir(templateDirectory, '$', '$');
+        STGroup.verbose = true;
+        
+        String templateName = "Module";
+        ST moduleTemplate = templates.getInstanceOf(templateName);
+        if(moduleTemplate == null){
+            String message = "The template " + templateName + ".st could not be loaded";
+            DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message(message));
+            return;
+        }
         moduleTemplate.add("ModuleName", moduleName);
         String moduleCode = moduleTemplate.render();
-        int letsSee = 200;
         
+        String moduleFilePath = moduleDirectoryStructure.getDirectory().getPath() + File.separator + templateName + ".php";
+        File moduleFile = new File(moduleFilePath);
+        try (BufferedWriter moduleWriter = new BufferedWriter(new FileWriter(moduleFile))) {
+            moduleWriter.write(moduleCode);
+        }
     }
 
     /**

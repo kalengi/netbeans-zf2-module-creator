@@ -1,5 +1,5 @@
 <?php
-namespace <ModuleName>;
+namespace $ModuleName$;
 
 class Module
 {
