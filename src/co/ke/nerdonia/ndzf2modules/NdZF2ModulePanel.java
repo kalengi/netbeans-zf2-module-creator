@@ -32,6 +32,9 @@ final class NdZF2ModulePanel extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         TemplateDirectoryTextField = new javax.swing.JTextField();
         DirectoryBrowseButton = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        ModuleDefinitionFileTextField = new javax.swing.JTextField();
+        ModuleDefinitionBrowseButton = new javax.swing.JButton();
 
         NdZF2OptionsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(NdZF2ModulePanel.class, "NdZF2ModulePanel.NdZF2OptionsPanel.border.title"))); // NOI18N
         NdZF2OptionsPanel.setName(""); // NOI18N
@@ -47,18 +50,37 @@ final class NdZF2ModulePanel extends javax.swing.JPanel {
             }
         });
 
+        org.openide.awt.Mnemonics.setLocalizedText(jLabel2, org.openide.util.NbBundle.getMessage(NdZF2ModulePanel.class, "NdZF2ModulePanel.jLabel2.text")); // NOI18N
+
+        ModuleDefinitionFileTextField.setText(org.openide.util.NbBundle.getMessage(NdZF2ModulePanel.class, "NdZF2ModulePanel.ModuleDefinitionFileTextField.text")); // NOI18N
+
+        org.openide.awt.Mnemonics.setLocalizedText(ModuleDefinitionBrowseButton, org.openide.util.NbBundle.getMessage(NdZF2ModulePanel.class, "NdZF2ModulePanel.ModuleDefinitionBrowseButton.text")); // NOI18N
+        ModuleDefinitionBrowseButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ModuleDefinitionBrowseButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout NdZF2OptionsPanelLayout = new javax.swing.GroupLayout(NdZF2OptionsPanel);
         NdZF2OptionsPanel.setLayout(NdZF2OptionsPanelLayout);
         NdZF2OptionsPanelLayout.setHorizontalGroup(
             NdZF2OptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, NdZF2OptionsPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
+            .addGroup(NdZF2OptionsPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(NdZF2OptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(NdZF2OptionsPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(ModuleDefinitionFileTextField))
+                    .addGroup(NdZF2OptionsPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(TemplateDirectoryTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(TemplateDirectoryTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(DirectoryBrowseButton)
-                .addContainerGap())
+                .addGroup(NdZF2OptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(DirectoryBrowseButton)
+                    .addComponent(ModuleDefinitionBrowseButton))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
         NdZF2OptionsPanelLayout.setVerticalGroup(
             NdZF2OptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -69,7 +91,13 @@ final class NdZF2ModulePanel extends javax.swing.JPanel {
                         .addComponent(TemplateDirectoryTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(DirectoryBrowseButton))
                     .addComponent(jLabel1))
-                .addContainerGap(69, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(NdZF2OptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(NdZF2OptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(ModuleDefinitionFileTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(ModuleDefinitionBrowseButton))
+                    .addComponent(jLabel2))
+                .addContainerGap(186, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -80,7 +108,9 @@ final class NdZF2ModulePanel extends javax.swing.JPanel {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(NdZF2OptionsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(NdZF2OptionsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -102,14 +132,34 @@ final class NdZF2ModulePanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_DirectoryBrowseButtonActionPerformed
 
+    private void ModuleDefinitionBrowseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModuleDefinitionBrowseButtonActionPerformed
+        String initialFile = NbPreferences.forModule(NdZF2ModulePanel.class).get("ModuleDefinitionPreference", "");
+        
+        if(initialFile.isEmpty()){
+            initialFile = System.getProperty("user.dir");
+        }
+        
+        JFileChooser filePicker = new JFileChooser(initialFile);
+        filePicker.setFileSelectionMode( JFileChooser.FILES_ONLY);
+        int userResponse = filePicker.showOpenDialog(this);
+        
+        if (userResponse == JFileChooser.APPROVE_OPTION) {
+            String selectedFile = filePicker.getSelectedFile().getPath();
+            
+            ModuleDefinitionFileTextField.setText(selectedFile);
+        }
+    }//GEN-LAST:event_ModuleDefinitionBrowseButtonActionPerformed
+
     void load() {
         
         TemplateDirectoryTextField.setText(NbPreferences.forModule(NdZF2ModulePanel.class).get("TemplateDirectoryPreference", ""));
+        ModuleDefinitionFileTextField.setText(NbPreferences.forModule(NdZF2ModulePanel.class).get("ModuleDefinitionPreference", ""));
     }
 
     void store() {
         if(valid()){
             NbPreferences.forModule(NdZF2ModulePanel.class).put("TemplateDirectoryPreference", TemplateDirectoryTextField.getText());
+            NbPreferences.forModule(NdZF2ModulePanel.class).put("ModuleDefinitionPreference", ModuleDefinitionFileTextField.getText());
         }
         
     }
@@ -125,13 +175,28 @@ final class NdZF2ModulePanel extends javax.swing.JPanel {
                 return false;
             }
         }
+        
+        String moduleDefinitionPath = ModuleDefinitionFileTextField.getText();
+        if(!moduleDefinitionPath.isEmpty()){
+            File moduleDefinitionChecker = new File(moduleDefinitionPath);
+        
+            if(!moduleDefinitionChecker.isFile() || moduleDefinitionChecker.isDirectory()){
+                String message = "The Module Definition file is not valid";
+                DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message(message));
+                return false;
+            }
+        }
+        
         return true;
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton DirectoryBrowseButton;
+    private javax.swing.JButton ModuleDefinitionBrowseButton;
+    private javax.swing.JTextField ModuleDefinitionFileTextField;
     private javax.swing.JPanel NdZF2OptionsPanel;
     private javax.swing.JTextField TemplateDirectoryTextField;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     // End of variables declaration//GEN-END:variables
 
     
