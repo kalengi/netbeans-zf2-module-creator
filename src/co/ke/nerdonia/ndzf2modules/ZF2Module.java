@@ -84,53 +84,9 @@ public class ZF2Module implements Serializable{
         
         loadModuleDefinition();
         
-        
-        // Directory structure...
-        //main, config
         Element moduleElement = moduleDefinition.getDocumentElement();
         moduleDirectoryStructure = new ZF2ModuleDirectory(this, modulePath, moduleElement, templateDirectory);
-        /*ZF2ModuleDirectory configDirectory = moduleDirectoryStructure.addChild(configFolderName);
         
-        //src
-        ZF2ModuleDirectory srcDirectory = moduleDirectoryStructure.addChild(srcFolderName);
-        ZF2ModuleDirectory srcModuleDirectory = srcDirectory.addChild(moduleName);
-        srcModuleDirectory.addChild(controllerFolderName);
-        srcModuleDirectory.addChild(formFolderName);
-        srcModuleDirectory.addChild(modelFolderName);
-        
-        //view
-        ZF2ModuleDirectory viewDirectory = moduleDirectoryStructure.addChild(viewFolderName);
-        ZF2ModuleDirectory viewModuleDirectory = viewDirectory.addChild(moduleName.toLowerCase());
-        viewModuleDirectory.addChild(moduleName.toLowerCase());*/
-        
-        /*/ Config files...
-        Preferences userPreferences = NbPreferences.forModule(NdZF2ModulePanel.class);
-        String templateDirectory = userPreferences.get("TemplateDirectoryPreference", "");
-        
-        if(templateDirectory.isEmpty()){
-            String message = "Please specify the Template Directory in the options ";
-            DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message(message));
-            return;
-        }*/
-        
-        /*STGroup templates = new STRawGroupDir(templateDirectory, '$', '$');
-        //STGroup.verbose = true;
-        
-        String templateName = "Module";
-        ST moduleTemplate = templates.getInstanceOf(templateName);
-        if(moduleTemplate == null){
-            String message = "The template " + templateName + ".st could not be loaded";
-            DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message(message));
-            return;
-        }
-        moduleTemplate.add("ModuleName", moduleName);
-        String moduleCode = moduleTemplate.render();
-        
-        String moduleFilePath = moduleDirectoryStructure.getDirectory().getPath() + File.separator + templateName + ".php";
-        File moduleFile = new File(moduleFilePath);
-        try (BufferedWriter moduleWriter = new BufferedWriter(new FileWriter(moduleFile))) {
-            moduleWriter.write(moduleCode);
-        }*/
     }
 
     

@@ -14,16 +14,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-//import javax.xml.xpath.XPath;
-//import javax.xml.xpath.XPathConstants;
-//import javax.xml.xpath.XPathExpressionException;
-//import javax.xml.xpath.XPathFactory;
-//import org.openide.DialogDisplayer;
-////import org.openide.NotifyDescriptor;
 import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroup;
 import org.stringtemplate.v4.STRawGroupDir;
-//import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -56,9 +49,7 @@ public class ZF2ModuleDirectory {
         this.moduleDefinitionSection = moduleDefinitionSection;
         setParentDirectory(modulePath);
         setTemplateDirectory(templateDirectory);
-        //XPath xPath =  XPathFactory.newInstance().newXPath();
-        //String query = "/module";
-        //Node moduleNode = (Node) xPath.compile(query).evaluate(moduleDefinition, XPathConstants.NODE);
+        
         switch (moduleDefinitionSection.getNodeName()) {
             case "module":
             case "directory":
@@ -87,14 +78,12 @@ public class ZF2ModuleDirectory {
                             case "template":
                                 STGroup templates = new STRawGroupDir(templateDirectory, '$', '$');
                                 //STGroup.verbose = true;
-                                //String templateName = "Module";
                                 ST fileTemplate = templates.getInstanceOf(fileName);
                                 if(fileTemplate == null){
                                     String message = "The template " + fileName + ".st could not be loaded";
                                     Logger logger = Logger.getAnonymousLogger();
                                     logger.log(Level.WARNING, message);
-                                    //throw new IllegalStateException(message);
-
+                                    
                                 }
                                 else {
                                     fileTemplate.add("ModuleName", module.getModuleName());
