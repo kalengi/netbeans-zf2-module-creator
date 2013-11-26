@@ -21,6 +21,7 @@ import org.openide.NotifyDescriptor;
 import org.openide.util.NbPreferences;
 import org.stringtemplate.v4.*;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 /**
@@ -86,8 +87,9 @@ public class ZF2Module implements Serializable{
         
         // Directory structure...
         //main, config
-        moduleDirectoryStructure = new ZF2ModuleDirectory(this, modulePath, moduleDefinition, templateDirectory);
-        ZF2ModuleDirectory configDirectory = moduleDirectoryStructure.addChild(configFolderName);
+        Element moduleElement = moduleDefinition.getDocumentElement();
+        moduleDirectoryStructure = new ZF2ModuleDirectory(this, modulePath, moduleElement, templateDirectory);
+        /*ZF2ModuleDirectory configDirectory = moduleDirectoryStructure.addChild(configFolderName);
         
         //src
         ZF2ModuleDirectory srcDirectory = moduleDirectoryStructure.addChild(srcFolderName);
@@ -99,7 +101,7 @@ public class ZF2Module implements Serializable{
         //view
         ZF2ModuleDirectory viewDirectory = moduleDirectoryStructure.addChild(viewFolderName);
         ZF2ModuleDirectory viewModuleDirectory = viewDirectory.addChild(moduleName.toLowerCase());
-        viewModuleDirectory.addChild(moduleName.toLowerCase());
+        viewModuleDirectory.addChild(moduleName.toLowerCase());*/
         
         /*/ Config files...
         Preferences userPreferences = NbPreferences.forModule(NdZF2ModulePanel.class);

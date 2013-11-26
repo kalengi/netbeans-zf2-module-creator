@@ -12,16 +12,18 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
-import org.openide.DialogDisplayer;
-import org.openide.NotifyDescriptor;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+//import javax.xml.xpath.XPath;
+//import javax.xml.xpath.XPathConstants;
+//import javax.xml.xpath.XPathExpressionException;
+//import javax.xml.xpath.XPathFactory;
+//import org.openide.DialogDisplayer;
+////import org.openide.NotifyDescriptor;
 import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroup;
 import org.stringtemplate.v4.STRawGroupDir;
-import org.w3c.dom.Document;
+//import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -49,25 +51,23 @@ public class ZF2ModuleDirectory {
         children = new HashMap<String, ZF2ModuleDirectory>();
     }
 
-    public ZF2ModuleDirectory(ZF2Module parentModule, String modulePath, Document moduleDefinition, String templateDirectory) throws XPathExpressionException, IOException {
+    public ZF2ModuleDirectory(ZF2Module parentModule, String modulePath, Element moduleDefinitionSection, String templateDirectory) throws /*XPathExpressionException,*/ IOException {
         this.module = parentModule;
+        this.moduleDefinitionSection = moduleDefinitionSection;
         setParentDirectory(modulePath);
         setTemplateDirectory(templateDirectory);
-        
-        XPath xPath =  XPathFactory.newInstance().newXPath();
-        
-        String query = "/module";
-        Node moduleNode = (Node) xPath.compile(query).evaluate(moduleDefinition, XPathConstants.NODE);
-        if(moduleNode != null){
-            //setup module
-            moduleDefinitionSection = (Element) moduleNode;
-            /*Element moduleNodeElement = (Element) moduleNode;*/
-            String elementName = moduleDefinitionSection.getAttribute("name");
-            setDirectoryName(elementName);
-        }
-        else {
-            //setup module directories
-            
+        //XPath xPath =  XPathFactory.newInstance().newXPath();
+        //String query = "/module";
+        //Node moduleNode = (Node) xPath.compile(query).evaluate(moduleDefinition, XPathConstants.NODE);
+        switch (moduleDefinitionSection.getNodeName()) {
+            case "module":
+            case "directory":
+                String elementName = moduleDefinitionSection.getAttribute("name");
+                setDirectoryName(elementName);
+                break;  
+            default:
+                String message = "Unrecognized module definition element: " + moduleDefinitionSection.getNodeName();
+                throw new IllegalStateException(message);
         }
         
         createDirectory();
@@ -91,11 +91,15 @@ public class ZF2ModuleDirectory {
                                 ST fileTemplate = templates.getInstanceOf(fileName);
                                 if(fileTemplate == null){
                                     String message = "The template " + fileName + ".st could not be loaded";
-                                    throw new IllegalStateException(message);
+                                    Logger logger = Logger.getAnonymousLogger();
+                                    logger.log(Level.WARNING, message);
+                                    //throw new IllegalStateException(message);
 
                                 }
-                                fileTemplate.add("ModuleName", module.getModuleName());
-                                completeCode = fileTemplate.render();
+                                else {
+                                    fileTemplate.add("ModuleName", module.getModuleName());
+                                    completeCode = fileTemplate.render();
+                                }
                                 break;
                             case "source":
                                 String filePath = templateDirectory + File.separator + fileName + ".php";
@@ -108,7 +112,9 @@ public class ZF2ModuleDirectory {
                                     }
                                 }
                                 break;
-
+                            default:
+                                Logger logger = Logger.getAnonymousLogger();
+                                logger.log(Level.WARNING, "Unrecognized file type: {0}", fileType);
                         }
 
 
@@ -122,6 +128,19 @@ public class ZF2ModuleDirectory {
             }
         }
         
+        //directories
+        NodeList directoryNodes = moduleDefinitionSection.getElementsByTagName("directory");
+        if (directoryNodes.item(0) != null) {
+            for(int i = 0; i < directoryNodes.getLength(); i++){
+                if(((Node)moduleDefinitionSection).equals(directoryNodes.item(i).getParentNode())){
+                    if (directoryNodes.item(i).getNodeType() == Node.ELEMENT_NODE) {
+                        Element directoryElement = (Element) directoryNodes.item(i);
+                        
+                        addChild(directoryElement);
+                    }
+                }
+            }
+        }
     }
     
     /**
@@ -167,6 +186,26 @@ public class ZF2ModuleDirectory {
         return true;
     }
     
+    /**
+     * Add a child directory
+     *
+     * @param child Element containing the name of the child directory to be added
+     * 
+     * @return newly created ZF2ModuleDirectory object
+     */
+    public final ZF2ModuleDirectory addChild(Element child) throws IOException {
+        String childName = child.getAttribute("name");
+        String parentPath = directory.getPath();
+        /* TODO: Add validation to check that the required data has been initialized...*/
+        ZF2ModuleDirectory childDirectory = new ZF2ModuleDirectory(this.module, parentPath, child, this.templateDirectory);
+        
+        if(children == null){
+            children = new HashMap<String, ZF2ModuleDirectory>();
+        }
+        
+        children.put(childName, childDirectory);
+        return children.get(childName);
+    }
     
     /**
      * Add a child directory
