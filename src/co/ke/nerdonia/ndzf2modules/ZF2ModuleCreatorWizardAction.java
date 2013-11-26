@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.prefs.Preferences;
 import javax.swing.JComponent;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
 import org.openide.WizardDescriptor;
@@ -88,7 +89,7 @@ public final class ZF2ModuleCreatorWizardAction implements ActionListener {
         }
     }
 
-    private void createZF2Module(String moduleName) throws IOException, IllegalStateException, ParserConfigurationException, SAXException {
+    private void createZF2Module(String moduleName) throws IOException, IllegalStateException, ParserConfigurationException, SAXException, XPathExpressionException {
         ZF2Module zf2Module = new ZF2Module(moduleName);
         
         zf2Module.setModulePath(context.getPath());

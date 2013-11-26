@@ -14,6 +14,7 @@ import java.util.prefs.Preferences;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
 import org.apache.commons.io.FilenameUtils;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
@@ -39,6 +40,7 @@ public class ZF2Module implements Serializable{
     private ZF2ModuleDirectory moduleDirectoryStructure;
     private String moduleDefinitionPath;
     private Document moduleDefinition;
+    private String templateDirectory;
     
 
 
@@ -58,7 +60,7 @@ public class ZF2Module implements Serializable{
      *
      * 
      */
-    public void create() throws IOException, IllegalStateException, ParserConfigurationException, SAXException {
+    public void create() throws IOException, IllegalStateException, ParserConfigurationException, SAXException, XPathExpressionException {
         
         if(moduleName.isEmpty()){
             throw new IllegalStateException("The module name is not specified"); 
@@ -72,12 +74,19 @@ public class ZF2Module implements Serializable{
             throw new IllegalStateException("The Module Definition path is not specified"); 
         }
         
+        Preferences userPreferences = NbPreferences.forModule(NdZF2ModulePanel.class);
+        templateDirectory = userPreferences.get("TemplateDirectoryPreference", "");
+        
+        if(templateDirectory.isEmpty()){
+            throw new IllegalStateException("Please specify the Template Directory in the options ");
+        }
+        
         loadModuleDefinition();
         
         
         // Directory structure...
         //main, config
-        moduleDirectoryStructure = new ZF2ModuleDirectory(modulePath, moduleName);
+        moduleDirectoryStructure = new ZF2ModuleDirectory(this, modulePath, moduleDefinition, templateDirectory);
         ZF2ModuleDirectory configDirectory = moduleDirectoryStructure.addChild(configFolderName);
         
         //src
@@ -92,7 +101,7 @@ public class ZF2Module implements Serializable{
         ZF2ModuleDirectory viewModuleDirectory = viewDirectory.addChild(moduleName.toLowerCase());
         viewModuleDirectory.addChild(moduleName.toLowerCase());
         
-        // Config files...
+        /*/ Config files...
         Preferences userPreferences = NbPreferences.forModule(NdZF2ModulePanel.class);
         String templateDirectory = userPreferences.get("TemplateDirectoryPreference", "");
         
@@ -100,9 +109,9 @@ public class ZF2Module implements Serializable{
             String message = "Please specify the Template Directory in the options ";
             DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message(message));
             return;
-        }
+        }*/
         
-        STGroup templates = new STRawGroupDir(templateDirectory, '$', '$');
+        /*STGroup templates = new STRawGroupDir(templateDirectory, '$', '$');
         //STGroup.verbose = true;
         
         String templateName = "Module";
@@ -119,7 +128,7 @@ public class ZF2Module implements Serializable{
         File moduleFile = new File(moduleFilePath);
         try (BufferedWriter moduleWriter = new BufferedWriter(new FileWriter(moduleFile))) {
             moduleWriter.write(moduleCode);
-        }
+        }*/
     }
 
     
@@ -138,7 +147,7 @@ public class ZF2Module implements Serializable{
         DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = builderFactory.newDocumentBuilder();
         moduleDefinition = builder.parse(new ByteArrayInputStream(moduleDefinitionXML.getBytes()));
-        
+        moduleDefinition.getDocumentElement().normalize();
         
     }
     
