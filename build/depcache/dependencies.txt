@@ -86,10 +86,6 @@ org.openide.util.NbPreferences
 java.lang.Object
 org.stringtemplate.v4.STGroup
 java.lang.String
-||:co.ke.nerdonia.ndzf2modules.Bundle
-java.lang.Object
-org.openide.util.NbBundle
-co.ke.nerdonia.ndzf2modules.Bundle
 ||:co.ke.nerdonia.ndzf2modules.ZF2ModuleCreatorWizardAction
 java.lang.StringBuilder
 co.ke.nerdonia.ndzf2modules.ZF2ModuleCreatorWizardAction
@@ -124,6 +120,10 @@ java.lang.Object
 org.openide.util.NbPreferences
 org.openide.NotifyDescriptor$Message
 java.lang.String
+||:co.ke.nerdonia.ndzf2modules.Bundle
+java.lang.Object
+org.openide.util.NbBundle
+co.ke.nerdonia.ndzf2modules.Bundle
 ||:co.ke.nerdonia.ndzf2modules.NdZF2ModulePanel
 java.util.prefs.Preferences
 java.lang.System
