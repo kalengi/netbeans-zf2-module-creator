@@ -16,7 +16,6 @@ import java.util.prefs.Preferences;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPathExpressionException;
 import org.apache.commons.io.FilenameUtils;
 import org.openide.util.NbPreferences;
 import org.stringtemplate.v4.*;
@@ -55,7 +54,7 @@ public class ZF2Module implements Serializable{
      *
      * 
      */
-    public void create() throws IOException, IllegalStateException, ParserConfigurationException, SAXException, XPathExpressionException {
+    public void create() throws IOException, IllegalStateException, ParserConfigurationException, SAXException {
         
         if(moduleName.isEmpty()){
             throw new IllegalStateException("The module name is not specified"); 
