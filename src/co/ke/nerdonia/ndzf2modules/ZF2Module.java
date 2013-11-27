@@ -4,8 +4,12 @@
  */
 package co.ke.nerdonia.ndzf2modules;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.prefs.Preferences;
@@ -77,6 +81,33 @@ public class ZF2Module implements Serializable{
         Element moduleElement = moduleDefinition.getDocumentElement();
         moduleDirectoryStructure = new ZF2ModuleDirectory(this, modulePath, moduleElement, templateDirectory);
         
+        //register the module...
+        String applicationConfigPath = (new File(modulePath)).getParent() + File.separator + "config" + File.separator + "application.config.php";
+        File configFile = new File(applicationConfigPath);
+        String configCode = "";
+        String moduleDeclaration = "'" + moduleName + "'";
+            
+        try (BufferedReader configFileReader = new BufferedReader(new FileReader(configFile))) {
+            String line;
+            while((line = configFileReader.readLine()) != null){
+                if(line.contains(moduleDeclaration)){
+                    continue; //skip the line to avoid duplication
+                }
+                
+                if(line.contains("'Application'")){
+                    String moduleRegistration = moduleDeclaration + ",";// + System.lineSeparator();
+                    line = line + System.lineSeparator() + moduleRegistration;
+                }
+                
+                configCode += line + System.lineSeparator(); 
+            }
+        }
+        
+        if(!configCode.isEmpty()){
+            try (BufferedWriter configFileWriter = new BufferedWriter(new FileWriter(configFile))) {
+                configFileWriter.write(configCode);
+            }
+        }
     }
 
     
