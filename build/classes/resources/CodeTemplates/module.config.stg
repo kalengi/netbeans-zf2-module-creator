@@ -1,5 +1,5 @@
 delimiters "$", "$"
-module.config(ModuleName, ModuleNameLower) ::= <<
+module_config(ModuleName, ModuleNameLower) ::= <<
 <?php
 return array(
     'controllers' => array(

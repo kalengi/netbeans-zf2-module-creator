@@ -1,3 +1,5 @@
+delimiters "$", "$"
+NdZf2ModuleDefinition(ModuleName, ModuleNameLower) ::= <<
 <?xml version="1.0"?>
 <module name="$ModuleName$">
     <file name="Module" type="template" />
@@ -19,3 +21,4 @@
         </directory>
     </directory>
 </module>
+>>

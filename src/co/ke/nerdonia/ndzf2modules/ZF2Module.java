@@ -4,10 +4,8 @@
  */
 package co.ke.nerdonia.ndzf2modules;
 
-import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.prefs.Preferences;
@@ -16,8 +14,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 import org.apache.commons.io.FilenameUtils;
-import org.openide.DialogDisplayer;
-import org.openide.NotifyDescriptor;
 import org.openide.util.NbPreferences;
 import org.stringtemplate.v4.*;
 import org.w3c.dom.Document;
@@ -92,9 +88,9 @@ public class ZF2Module implements Serializable{
     
     private void loadModuleDefinition() throws ParserConfigurationException, SAXException, IOException {
         File moduleDefinitionFile = new File(moduleDefinitionPath);
-        String moduleDefinitionFolder = moduleDefinitionFile.getParent();
         
-        STGroup templates = new STRawGroupDir(moduleDefinitionFolder, '$', '$');
+        //STGroup.verbose = true;
+        STGroup templates = new STGroupFile(moduleDefinitionPath);
         String moduleDefinitionTemplateName = FilenameUtils.getBaseName(moduleDefinitionFile.getPath());
         
         ST moduleDefinitionTemplate = templates.getInstanceOf(moduleDefinitionTemplateName);

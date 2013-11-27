@@ -16,6 +16,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroup;
+import org.stringtemplate.v4.STGroupDir;
+import org.stringtemplate.v4.STGroupFile;
 import org.stringtemplate.v4.STRawGroupDir;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -76,9 +78,9 @@ public class ZF2ModuleDirectory {
                         String completeCode = "No code found";
                         switch (fileType.toLowerCase()) {
                             case "template":
-                                STGroup templates = new STRawGroupDir(templateDirectory, '$', '$');
+                                STGroup templates = new STGroupFile(templateDirectory + File.separator + fileName + ".stg");
                                 //STGroup.verbose = true;
-                                ST fileTemplate = templates.getInstanceOf(fileName);
+                                ST fileTemplate = templates.getInstanceOf(fileName.replace('.', '_'));
                                 if(fileTemplate == null){
                                     String message = "The template " + fileName + ".st could not be loaded";
                                     Logger logger = Logger.getAnonymousLogger();
@@ -86,7 +88,9 @@ public class ZF2ModuleDirectory {
                                     
                                 }
                                 else {
-                                    fileTemplate.add("ModuleName", module.getModuleName());
+                                    String moduleName = module.getModuleName();
+                                    fileTemplate.add("ModuleName", moduleName);
+                                    fileTemplate.add("ModuleNameLower", moduleName.toLowerCase());
                                     completeCode = fileTemplate.render();
                                 }
                                 break;

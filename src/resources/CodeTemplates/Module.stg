@@ -1,3 +1,5 @@
+delimiters "$", "$"
+Module(ModuleName, ModuleNameLower) ::= <<
 <?php
 namespace $ModuleName$;
 
@@ -6,10 +8,10 @@ class Module
     public function getAutoloaderConfig()
     {
         return array(
-            'Zend\Loader\ClassMapAutoloader' => array(
+            'Zend\\Loader\\ClassMapAutoloader' => array(
                 __DIR__ . '/autoload_classmap.php',
             ),
-            'Zend\Loader\StandardAutoloader' => array(
+            'Zend\\Loader\\StandardAutoloader' => array(
                 'namespaces' => array(
                     __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
                 ),
@@ -22,3 +24,4 @@ class Module
         return include __DIR__ . '/config/module.config.php';
     }
 }
+>>

@@ -12,10 +12,10 @@ java.lang.System
 java.lang.IllegalArgumentException
 org.w3c.dom.Element
 java.util.logging.Logger
+org.stringtemplate.v4.STGroupFile
 java.io.BufferedWriter
 java.io.File
 org.w3c.dom.Node
-org.stringtemplate.v4.STRawGroupDir
 java.lang.Character
 java.util.Map
 org.stringtemplate.v4.ST
@@ -68,9 +68,9 @@ java.io.Serializable
 java.lang.IllegalArgumentException
 javax.xml.xpath.XPathExpressionException
 org.w3c.dom.Element
+org.stringtemplate.v4.STGroupFile
 java.io.File
 javax.xml.parsers.DocumentBuilderFactory
-org.stringtemplate.v4.STRawGroupDir
 co.ke.nerdonia.ndzf2modules.NdZF2ModulePanel
 org.w3c.dom.Document
 org.xml.sax.SAXException
