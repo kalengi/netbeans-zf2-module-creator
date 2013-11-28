@@ -38,7 +38,7 @@ public class ZF2Module implements Serializable{
     
 
 
-    
+    //TODO: Add method for module removal that can clean up the module registration in the application.
 
 
     public ZF2Module(String moduleName){

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><module codename="co.ke.nerdonia.ndzf2modules">
-    <module_version install_time="1385600585701" last="true" origin="installer" specification_version="1.0">
+    <module_version install_time="1385601493884" last="true" origin="installer" specification_version="1.0">
         <file crc="2888292136" name="config/Modules/co-ke-nerdonia-ndzf2modules.xml"/>
-        <file crc="1942201380" name="modules/co-ke-nerdonia-ndzf2modules.jar"/>
+        <file crc="1607592737" name="modules/co-ke-nerdonia-ndzf2modules.jar"/>
         <file crc="4180613572" name="modules/ext/ST-4.0.7.jar"/>
         <file crc="2318814408" name="modules/ext/antlr-4.1-complete.jar"/>
     </module_version>

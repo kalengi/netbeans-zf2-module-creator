@@ -16,12 +16,5 @@ class Bundle {
     static String AdvancedOption_Keywords_NdZF2Module() {
         return org.openide.util.NbBundle.getMessage(Bundle.class, "AdvancedOption_Keywords_NdZF2Module");
     }
-    /**
-     * @return <i>New ZF2 Module</i>
-     * @see ZF2ModuleActionListener
-     */
-    static String CTL_ZF2ModuleActionListener() {
-        return org.openide.util.NbBundle.getMessage(Bundle.class, "CTL_ZF2ModuleActionListener");
-    }
     private void Bundle() {}
 }
