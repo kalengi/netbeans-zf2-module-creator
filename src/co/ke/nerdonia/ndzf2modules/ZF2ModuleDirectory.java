@@ -80,7 +80,7 @@ public class ZF2ModuleDirectory {
                                 //STGroup.verbose = true;
                                 ST fileTemplate = templates.getInstanceOf(fileName.replace('.', '_'));
                                 if(fileTemplate == null){
-                                    String message = "The template " + fileName + ".st could not be loaded";
+                                    String message = "The template " + fileName + ".stg could not be loaded";
                                     Logger logger = Logger.getAnonymousLogger();
                                     logger.log(Level.WARNING, message);
                                     
