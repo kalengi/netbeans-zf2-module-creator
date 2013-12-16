@@ -85,8 +85,10 @@ public class ZF2Module implements Serializable{
         File configFile = new File(applicationConfigPath);
         String configCode = "";
         String moduleDeclaration = "'" + moduleName + "'";
-            
-        try (BufferedReader configFileReader = new BufferedReader(new FileReader(configFile))) {
+        
+        BufferedReader configFileReader = null;
+        try{
+            configFileReader = new BufferedReader(new FileReader(configFile));
             String line;
             while((line = configFileReader.readLine()) != null){
                 if(line.contains(moduleDeclaration)){
@@ -95,16 +97,34 @@ public class ZF2Module implements Serializable{
                 
                 if(line.contains("'Application'")){
                     String moduleRegistration = moduleDeclaration + ",";// + System.lineSeparator();
-                    line = line + System.lineSeparator() + moduleRegistration;
+                    line = line + System.getProperty("line.separator") + moduleRegistration;
                 }
                 
-                configCode += line + System.lineSeparator(); 
+                configCode += line + System.getProperty("line.separator"); 
+            }
+        }
+        finally{
+            try{
+                configFileReader.close();
+            }
+            catch (IOException e) {
+                e.printStackTrace();
             }
         }
         
         if(!configCode.isEmpty()){
-            try (BufferedWriter configFileWriter = new BufferedWriter(new FileWriter(configFile))) {
+            BufferedWriter configFileWriter =  null;
+            try {
+                configFileWriter = new BufferedWriter(new FileWriter(configFile));
                 configFileWriter.write(configCode);
+            }
+            finally{
+                try{
+                    configFileWriter.close();
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

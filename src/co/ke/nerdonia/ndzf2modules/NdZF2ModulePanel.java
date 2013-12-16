@@ -5,6 +5,8 @@
 package co.ke.nerdonia.ndzf2modules;
 
 import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
@@ -16,6 +18,8 @@ final class NdZF2ModulePanel extends javax.swing.JPanel {
 
     NdZF2ModulePanel(NdZF2ModuleOptionsPanelController controller) {
         this.controller = controller;
+        Logger logger = Logger.getAnonymousLogger();
+        logger.log(Level.INFO, "Loading panel...");
         initComponents();
         // TODO listen to changes in form fields and call controller.changed()
     }

@@ -50,15 +50,13 @@ public class ZF2ModuleDirectory {
         setParentDirectory(modulePath);
         setTemplateDirectory(templateDirectory);
         
-        switch (moduleDefinitionSection.getNodeName()) {
-            case "module":
-            case "directory":
-                String elementName = moduleDefinitionSection.getAttribute("name");
-                setDirectoryName(elementName);
-                break;  
-            default:
-                String message = "Unrecognized module definition element: " + moduleDefinitionSection.getNodeName();
-                throw new IllegalStateException(message);
+        if (moduleDefinitionSection.getNodeName().equals("module") || moduleDefinitionSection.getNodeName().equals("directory")) {
+            String elementName = moduleDefinitionSection.getAttribute("name");
+            setDirectoryName(elementName);
+        }
+        else {
+            String message = "Unrecognized module definition element: " + moduleDefinitionSection.getNodeName();
+            throw new IllegalStateException(message);
         }
         
         createDirectory();
@@ -74,45 +72,70 @@ public class ZF2ModuleDirectory {
                         String fileName = fileElement.getAttribute("name");
                         String fileType =  fileElement.getAttribute("type");
                         String completeCode = "No code found";
-                        switch (fileType.toLowerCase()) {
-                            case "template":
-                                STGroup templates = new STGroupFile(templateDirectory + File.separator + fileName + ".stg");
-                                //STGroup.verbose = true;
-                                ST fileTemplate = templates.getInstanceOf(fileName.replace('.', '_'));
-                                if(fileTemplate == null){
-                                    String message = "The template " + fileName + ".stg could not be loaded";
-                                    Logger logger = Logger.getAnonymousLogger();
-                                    logger.log(Level.WARNING, message);
-                                    
-                                }
-                                else {
-                                    String moduleName = module.getModuleName();
-                                    fileTemplate.add("ModuleName", moduleName);
-                                    fileTemplate.add("ModuleNameLower", moduleName.toLowerCase());
-                                    completeCode = fileTemplate.render();
-                                }
-                                break;
-                            case "source":
-                                String filePath = templateDirectory + File.separator + fileName + ".php";
-                                File sourceFile = new File(filePath);
-                                try (BufferedReader fileReader = new BufferedReader(new FileReader(sourceFile))) {
-                                    completeCode = "";
-                                    String line;
-                                    while((line = fileReader.readLine()) != null){
-                                        completeCode += line + System.lineSeparator(); // System.getProperty("line.separator");
-                                    }
-                                }
-                                break;
-                            default:
+                        
+                        if (fileType.toLowerCase().equals("template")) {
+                            
+                            STGroup templates = new STGroupFile(templateDirectory + File.separator + fileName + ".stg");
+                            //STGroup.verbose = true;
+                            ST fileTemplate = templates.getInstanceOf(fileName.replace('.', '_'));
+                            if(fileTemplate == null){
+                                String message = "The template " + fileName + ".stg could not be loaded";
                                 Logger logger = Logger.getAnonymousLogger();
-                                logger.log(Level.WARNING, "Unrecognized file type: {0}", fileType);
+                                logger.log(Level.WARNING, message);
+
+                            }
+                            else {
+                                String moduleName = module.getModuleName();
+                                fileTemplate.add("ModuleName", moduleName);
+                                fileTemplate.add("ModuleNameLower", moduleName.toLowerCase());
+                                completeCode = fileTemplate.render();
+                            }
+                        }
+                        else if (fileType.toLowerCase().equals("source")) {
+                            
+                            String filePath = templateDirectory + File.separator + fileName + ".php";
+                            File sourceFile = new File(filePath);
+
+                            BufferedReader fileReader = null;
+                            try {
+                                fileReader = new BufferedReader(new FileReader(sourceFile));
+                                completeCode = "";
+                                String line;
+                                while((line = fileReader.readLine()) != null){
+                                    completeCode += line + System.getProperty("line.separator"); // System.lineSeparator();
+                                }
+                            }
+                            finally{
+                                try{
+                                    fileReader.close();
+                                }
+                                catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                        else {
+                            
+                            Logger logger = Logger.getAnonymousLogger();
+                            logger.log(Level.WARNING, "Unrecognized file type: {0}", fileType);
                         }
 
 
                         String filePath = parentDirectory + File.separator + directoryName + File.separator + fileName + ".php";
                         File targetFile = new File(filePath);
-                        try (BufferedWriter fileWriter = new BufferedWriter(new FileWriter(targetFile))) {
+                        
+                        BufferedWriter fileWriter =  null;
+                        try {
+                            fileWriter = new BufferedWriter(new FileWriter(targetFile));
                             fileWriter.write(completeCode);
+                        }
+                        finally{
+                            try{
+                                fileWriter.close();
+                            }
+                            catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }

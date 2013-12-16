@@ -6,6 +6,8 @@ package co.ke.nerdonia.ndzf2modules;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JComponent;
 import org.netbeans.spi.options.OptionsPanelController;
 import org.openide.util.HelpCtx;
@@ -13,16 +15,21 @@ import org.openide.util.Lookup;
 
 @OptionsPanelController.SubRegistration(
         location = "org-netbeans-modules-php-project-ui-options-PHPOptionsCategory",
-        displayName = "#AdvancedOption_DisplayName_NdZF2Module",
-        keywords = "#AdvancedOption_Keywords_NdZF2Module",
+        displayName = "NdZF2",
+        keywords = "ndzf2module, zf2, zend framework",
         keywordsCategory = "org-netbeans-modules-php-project-ui-options-PHPOptionsCategory/NdZF2Module")
-@org.openide.util.NbBundle.Messages({"AdvancedOption_DisplayName_NdZF2Module=NdZF2", "AdvancedOption_Keywords_NdZF2Module=ndzf2module, zf2, zend framework"})
+//@org.openide.util.NbBundle.Messages({"AdvancedOption_DisplayName_NdZF2Module=NdZF2", "AdvancedOption_Keywords_NdZF2Module=ndzf2module, zf2, zend framework"})
 public final class NdZF2ModuleOptionsPanelController extends OptionsPanelController {
 
     private NdZF2ModulePanel panel;
     private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
     private boolean changed;
 
+    NdZF2ModuleOptionsPanelController(){
+        Logger logger = Logger.getAnonymousLogger();
+        logger.log(Level.INFO, "Creating panel option...");
+    }
+    
     public void update() {
         getPanel().load();
         changed = false;
